@@ -1,10 +1,10 @@
 # 🎓 <p align="center">
-  <img src="public/images/icons/logo.svg" alt="MYGRADETRACK Logo" width="120">
-    </p>
+<img src="public/images/icons/logo.svg" alt="MYGRADETRACK Logo" width="120">
+</p>
 
-    <h1 align="center" style="font-family: 'Montserrat', sans-serif; font-weight: bold; color: #129990;">
-    MYGRADETRACK
-    </h1>
+<h1 align="center" style="font-family: 'Montserrat', sans-serif; font-weight: bold; color: #129990;">
+MYGRADETRACK
+</h1>
 
 A Laravel-based **Grade Tracking System** that allows students and administrators to manage semesters, subjects, units, and academic performance efficiently.
 
