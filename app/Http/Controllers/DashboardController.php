@@ -2,70 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Semester;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\AcademicSummaryService;
 use Illuminate\Support\Facades\Auth;
-use PDO; // Add this import at the top
 
 class DashboardController extends Controller
 {
-   public function index()
+    public function index()
     {
-        $userId = Auth::id();
+        $user = Auth::user();
 
-        // Get the raw PDO connection
-        $pdo = DB::connection()->getPdo();
+        // 🔹 Use service to get overall + semester GWA summary
+        $summary = AcademicSummaryService::getAuthenticatedStudentSummary();
 
-        // Call stored procedure
-        $stmt = $pdo->prepare("CALL GetStudentAcademicSummary(?)");
-        $stmt->execute([$userId]);
+        $overallSummary = $summary['overall'] ?? null;
+        $semesterBreakdown = collect($summary['semesters'] ?? []);
 
-        // First result set: overall summary
-        $overallSummary = $stmt->fetch(PDO::FETCH_ASSOC);
+        // 🔹 Fetch all courses through Eloquent relationship
+        $courses = $user->semesters()
+            ->with('courses')
+            ->get()
+            ->flatMap(function ($semester) {
+                return $semester->courses->map(function ($course) use ($semester) {
+                    return [
+                        'id' => $course->id,
+                        'course_name' => $course->course_name,
+                        'units' => $course->units,
+                        'grade' => $course->grade,
+                        'remarks' => $course->remarks,
+                        'semester_id' => $semester->id,
+                        'semester' => $semester->semester,
+                        'start_year' => $semester->start_year,
+                        'end_year' => $semester->end_year,
+                    ];
+                });
+            });
 
-        // Second result set: semester breakdown
-        $semesterBreakdown = [];
-        if ($stmt->nextRowset()) {
-            $semesterBreakdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-        // ✅ Very important: close the cursor before making any new query
-        $stmt->closeCursor();
-
-        // Now it's safe to query courses
-        $courses = DB::table('courses')
-            ->join('semesters', 'courses.semester_id', '=', 'semesters.id')
-            ->where('semesters.student_id', $userId)
-            ->select(
-                'courses.id',
-                'courses.course_name',
-                'courses.units',
-                'courses.grade',
-                'courses.remarks',
-                'courses.semester_id',
-                'semesters.semester',
-                'semesters.start_year',
-                'semesters.end_year'
-            )
-            ->orderBy('semesters.start_year')
-            ->orderByRaw("FIELD(semesters.semester, 'First Semester', 'Second Semester')")
-            ->get();
-
-        $sortedSemesters = collect($semesterBreakdown)->sortBy([
-            fn ($s) => $s['start_year'],
-            fn ($s) => match(strtolower($s['semester'])) {
+        // 🔹 Sort semester breakdown by start year and semester name
+        $sortedSemesters = $semesterBreakdown->sortBy([
+            fn($s) => $s['start_year'],
+            fn($s) => match(strtolower($s['semester'])) {
                 '1st sem', 'first semester' => 1,
                 '2nd sem', 'second semester' => 2,
                 default => 3,
             },
         ])->values();
 
-        // Separate arrays for labels and units
+        // 🔹 Prepare chart data (labels and unit totals)
         $unitSemesters = $sortedSemesters->map(fn($s) => "{$s['semester']} {$s['start_year']}-{$s['end_year']}");
         $unitsData = $sortedSemesters->pluck('total_units');
 
         return view('dashboard', [
-            'overall' => $overallSummary ?: null,
+            'overall' => $overallSummary,
             'semesters' => $semesterBreakdown,
             'courses' => $courses,
             'sortedSemesters' => $sortedSemesters,

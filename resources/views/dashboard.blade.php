@@ -149,13 +149,13 @@
                                     @forelse ($courses->sortBy('grade') as $course)
                                         <tr class="hover:bg-gray-50/50 transition-colors">
                                             <td class="py-3 pr-4 text-sm font-medium text-text_semi truncate">
-                                                {{ $course->course_name }}
+                                                {{ $course['course_name'] }}
                                             </td>
                                             <td class="py-3 px-2 text-sm text-gray-600 text-center">
-                                                {{ $course->units }}
+                                                {{ $course['units'] }}
                                             </td>
                                             <td class="text-sm font-semibold text-center font-mono text-indigo-600">
-                                                {{ number_format($course->grade, 1) }}
+                                                {{ number_format($course['grade'], 1) }}
                                             </td>
                                         </tr>
                                     @empty
