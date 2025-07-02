@@ -10,11 +10,8 @@ return new class extends Migration
         DB::unprepared("
             DROP PROCEDURE IF EXISTS GetStudentAcademicSummary;
 
-            DELIMITER $$
-
             CREATE PROCEDURE GetStudentAcademicSummary(IN student_id INT)
             BEGIN
-                -- Calculate overall GWA (weighted by units)
                 SELECT 
                     SUM(c.grade * c.units) / SUM(c.units) AS overall_gwa,
                     COUNT(DISTINCT s.id) AS total_semesters,
@@ -22,8 +19,7 @@ return new class extends Migration
                 FROM semesters s
                 JOIN courses c ON s.id = c.semester_id
                 WHERE s.student_id = student_id;
-                
-                -- Breakdown by semester
+
                 SELECT 
                     s.id AS semester_id,
                     s.semester,
@@ -42,10 +38,9 @@ return new class extends Migration
                         WHEN 'Second Semester' THEN 2
                         ELSE 3
                     END;
-            END$$
-
-            DELIMITER ;
+            END;
         ");
+
     }
 
     public function down(): void
