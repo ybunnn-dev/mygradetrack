@@ -2,7 +2,7 @@
 
 A Laravel-based **Grade Tracking System** that allows students and administrators to manage semesters, subjects, units, and academic performance efficiently.
 
-![MYGRADETRACK](public/images/grade-preview.png)
+![MYGRADETRACK](public/images/icons/logo.svg)
 
 ---
 
@@ -26,7 +26,7 @@ Follow these steps to set up the project:
 
 ### 1️⃣ Clone the Repository  
 
-    git clone https://github.com/your-username/mygrades_track.git
+    git clone https://github.com/ybunnn-dev/mygradetrack.git
 
 ### then open the folder in vscode with this command:  
     cd mygrades_track
