@@ -39,3 +39,12 @@ Route::get('/clear-cache', function () {
     Artisan::call('view:clear');
     return '✅ Laravel config, cache, and views cleared.';
 });
+
+
+Route::get('/check-session-db', function () {
+    return [
+        'session_driver' => config('session.driver'),
+        'session_connection' => config('session.connection'),
+        'db_connection' => config('database.default'),
+    ];
+});
