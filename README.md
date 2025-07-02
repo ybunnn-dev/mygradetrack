@@ -8,8 +8,6 @@ MYGRADETRACK
 
 A Laravel-based **Grade Tracking System** that allows students and administrators to manage semesters, subjects, units, and academic performance efficiently.
 
-<img src="public/images/icons/logo.svg" alt="MYGRADETRACK" width="200"/>
-
 ---
 
 ## 🚀 Features  
