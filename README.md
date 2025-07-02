@@ -1,75 +1,73 @@
 # 🎓 MYGRADETRACK
 
-**MYGRADETRACK** is a modern Laravel-based academic grade tracking system designed to help students and administrators manage semester subjects, units, and grades. Built with Laravel Jetstream, Livewire, Tailwind CSS, and Vite, this application offers a responsive and interactive experience with real-time UI updates and secure authentication.
+A Laravel-based **Grade Tracking System** that allows students and administrators to manage semesters, subjects, units, and academic performance efficiently.
+
+![MYGRADETRACK](public/images/grade-preview.png)
 
 ---
 
-## 🌟 Features
-
-- 📅 Semester and subject management  
-- 📝 Grade tracking per course  
-- 🧑‍🎓 User authentication via Jetstream  
-- ⚡ Real-time UI using Livewire and Alpine.js  
-- 💅 Beautiful and responsive interface with Tailwind CSS  
-- 🔧 Modern build process using Vite and npm  
-- 📁 Organized migrations for database setup  
-
----
-
-## 🛠️ Tech Stack
-
-| Tool         | Purpose                            |
-|--------------|------------------------------------|
-| Laravel      | Backend framework                  |
-| Jetstream    | Authentication scaffolding         |
-| Livewire     | Reactive components                |
-| Alpine.js    | Lightweight frontend interactivity |
-| Tailwind CSS | Utility-first CSS framework        |
-| Vite         | Fast frontend build tool           |
-| MySQL        | Preferred database (or compatible) |
+## 🚀 Features  
+✅ User Authentication via Jetstream  
+✅ Semester and Subject Management  
+✅ Grade Tracking per Course  
+✅ Livewire + Alpine.js for Reactive UI  
+✅ Tailwind CSS for a Beautiful Interface  
+✅ Modern Frontend Build via Vite  
+✅ Organized Migrations for Setup  
 
 ---
 
-## 🚀 Getting Started
+## Gibo nganay database sa phpmyadmin  
+    create database mygrades
 
-### ✅ Prerequisites
+## 🛠 Installation Guide  
 
-Ensure you have the following installed:
-- PHP >= 8.1  
-- Composer  
-- Node.js and npm  
-- MySQL or any Laravel-supported database  
+Follow these steps to set up the project:  
 
----
+### 1️⃣ Clone the Repository  
 
-### 📦 Full Setup Instructions
+    git clone https://github.com/your-username/mygrades_track.git
 
-```bash
-# 1. Clone the Repository
-git clone https://github.com/your-username/mygrades_track.git
-cd mygrades_track
+### then open the folder in vscode with this command:  
+    cd mygrades_track
 
-# 2. Install PHP Dependencies
-composer install
+#### 2. Install PHP Dependencies: Use Composer to install the required PHP dependencies for Laravel  
 
-# 3. Install Frontend Dependencies
-npm install
+    composer install
 
-# 4. Copy Environment File and Generate App Key
-cp .env.example .env
-php artisan key:generate
+#### 3. Install JavaScript Dependencies: Install the required frontend packages  
 
-# 5. Configure .env (edit with your preferred editor)
-# Set the following variables appropriately:
-# DB_DATABASE=your_database_name
-# DB_USERNAME=your_database_user
-# DB_PASSWORD=your_database_password
+    npm install
 
-# 6. Run Database Migrations
-php artisan migrate
+#### 4. Set Up Environment Variables: Create a .env file by copying the example  
 
-# 7. Build Frontend Assets (for development)
-npm run dev
+    cp .env.example .env
 
-# 8. Serve the Application
-php artisan serve
+#### 5. Open the .env file and update the following variables to match your local environment  
+
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=mygrades
+    DB_USERNAME=root
+    DB_PASSWORD=
+
+### 6. Make sure your XAMPP server is running and the database `mygrades` exists in phpMyAdmin  
+
+#### 7. Run the Artisan Key Generate Command  
+
+    php artisan key:generate
+
+### 8. Run the Artisan Migrate Command to create the tables  
+
+    php artisan migrate
+
+### 9. Build frontend assets using Vite  
+
+    npm run dev
+
+#### 10. Run the Application  
+
+    php artisan serve
+
+The application will be available at http://localhost:8000
