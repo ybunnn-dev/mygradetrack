@@ -59,20 +59,31 @@
                             <div class="flex justify-between items-center mb-3 sm:mb-4">
                                 <h2 class="text-base sm:text-lg font-semibold text-text_heavy">Grades for <span id="current-semester">
                                     @if($semesters->isNotEmpty())
-                                        {{ $semesters->first()->semester }}ester{{ $semesters->first()->start_year }}-{{ $semesters->first()->end_year }}
+                                        {{ $semesters->first()->semester }}ester {{ $semesters->first()->start_year }}-{{ $semesters->first()->end_year }}
                                     @else
                                         No Semesters
                                     @endif
                                 </span></h2>
-                                <button 
-                                    onclick="window.dispatchEvent(new CustomEvent('open-add-course'))"
-                                    class="bg-navgreen hover:bg-green-700 text-white p-1 sm:p-1.5 rounded text-[10px] xs:text-xs font-medium transition-colors duration-200 flex items-center gap-1"
-                                >
-                                    <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                    </svg>
-                                    Add Course
-                                </button>
+                                <div class="flex gap-2">
+                                    <button 
+                                        onclick="window.dispatchEvent(new CustomEvent('open-edit-semester'))"
+                                        class="border border-navgreen text-navgreen hover:bg-navgreen hover:text-white p-1 sm:p-1.5 rounded text-[10px] xs:text-xs font-medium transition-colors duration-200 flex items-center gap-1"
+                                    >
+                                        <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                        Edit Semester
+                                    </button>
+                                    <button 
+                                        onclick="window.dispatchEvent(new CustomEvent('open-add-course'))"
+                                        class="bg-navgreen hover:bg-green-700 text-white p-1 sm:p-1.5 rounded text-[10px] xs:text-xs font-medium transition-colors duration-200 flex items-center gap-1"
+                                    >
+                                        <svg class="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                        </svg>
+                                        Add Course
+                                    </button>
+                                </div>
                             </div>
                             <div class="overflow-x-auto flex-1">
                                 <table class="min-w-full table-fixed divide-y divide-gray-200">
@@ -138,6 +149,7 @@
 
     <!-- Include Modal Components -->
     <x-modals.add-semester-modal />
+    <x-modals.edit-semester-modal />
     <x-modals.add-course-modal />
     <x-modals.edit-course-modal />
     
