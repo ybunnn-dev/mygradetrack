@@ -9,23 +9,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//  Protect everything after login
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-});
 
-// If you want it protected by auth:
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    // ... other routes ...
     Route::get('/grades', [GradesController::class, 'index'])->name('grades');
+    Route::post('/semesters', [GradesController::class, 'storeSemester'])->name('semesters.store');
+    Route::post('/store-course', [GradesController::class, 'storeCourse'])->name('courses.store');
+    Route::get('/metrics', [MetricsController::class, 'index'])->name('metrics');
+    Route::get('/semesters/{semester}/courses', [GradesController::class, 'getCourses']);
+    Route::get('/edit-course', [GradesController::class, 'getUserCourses']);
+
+    Route::put('/courses/{id}', [GradesController::class, 'updateCourse'])->name('courses.update');
 });
-Route::post('/semesters', [GradesController::class, 'storeSemester'])->name('semesters.store');
-Route::post('/courses', [GradesController::class, 'storeCourse'])->name('courses.store');
-Route::get('/metrics', [MetricsController::class, 'index'])->name('metrics');

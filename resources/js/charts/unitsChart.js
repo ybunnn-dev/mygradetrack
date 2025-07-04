@@ -2,6 +2,28 @@ export function initUnitsDonutChart(unitSemesters, unitsData) {
     const ctx = document.getElementById('unitsDonutChart');
     if (!ctx) return;
 
+    // Convert string data to integers
+    const convertedUnitsData = unitsData.map(value => {
+        // Handle both string and number inputs
+        const num = parseInt(value, 10);
+        return isNaN(num) ? 0 : num;
+    });
+
+    // Optional: Filter out zero values and their corresponding labels
+    const validData = [];
+    const validLabels = [];
+    
+    convertedUnitsData.forEach((value, index) => {
+        if (value > 0) {
+            validData.push(value);
+            validLabels.push(unitSemesters[index]);
+        }
+    });
+
+    // Use the filtered data or original data based on your preference
+    const finalLabels = validLabels.length > 0 ? validLabels : unitSemesters;
+    const finalData = validData.length > 0 ? validData : convertedUnitsData;
+
     Chart.defaults.font.family = "'Montserrat', sans-serif";
 
     const backgroundColors = [
@@ -16,10 +38,10 @@ export function initUnitsDonutChart(unitSemesters, unitsData) {
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: unitSemesters,
+            labels: finalLabels,
             datasets: [{
-                data: unitsData,
-                backgroundColor: backgroundColors.slice(0, unitSemesters.length),
+                data: finalData,
+                backgroundColor: backgroundColors.slice(0, finalLabels.length),
                 borderWidth: 0,
                 cutout: '65%',
                 borderRadius: 4,
@@ -47,11 +69,14 @@ export function initUnitsDonutChart(unitSemesters, unitsData) {
                         pointStyle: 'circle',
                         generateLabels: function(chart) {
                             const data = chart.data;
+                            const dataset = data.datasets[0];
                             return data.labels.map((label, i) => {
-                                const value = data.datasets[0].data[i];
+                                const value = dataset.data[i];
+                                // Use the backgroundColor from the dataset instead of meta
+                                const backgroundColor = dataset.backgroundColor[i] || backgroundColors[i % backgroundColors.length];
                                 return {
                                     text: `${label} (${value} units)`,
-                                    fillStyle: chart.getDatasetMeta(0).data[i].options.backgroundColor,
+                                    fillStyle: backgroundColor,
                                     index: i
                                 };
                             });

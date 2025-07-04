@@ -8,13 +8,9 @@
                 "{$s['start_year']}-{$s['end_year']}"
             ])
         );
-
         const gpaData = @json($sortedSemesters->pluck('semester_gwa'));
-
         const unitSemesters = @json($unitSemesters);
         const unitsData = @json($unitsData);
-
-        
     </script>
 
     <div class="h-screen bg-mainback flex flex-col">
