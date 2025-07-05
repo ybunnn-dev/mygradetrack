@@ -7,23 +7,24 @@ COPY . .
 RUN npm run build --force
 
 # Stage 2: Laravel app with PHP-FPM and Nginx
-# IMPORTANT: Use fpm-alpine, not cli
 FROM php:8.2-fpm-alpine as laravelapp
 
 # Install system dependencies (including Nginx) and PHP extension development packages
 RUN apk update && apk add --no-cache \
-    build-base \
+    build-base \          # Essential for compiling most PHP extensions
     git \
     curl \
     zip \
     unzip \
-    nginx \
-    libzip-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    libwebp-dev \
-    libxml2-dev \
-    oniguruma-dev \
+    nginx \            
+    libzip-dev \      
+    libpng-dev \         
+    libjpeg-turbo-dev \  
+    libwebp-dev \        
+    libxml2-dev \      
+    oniguruma-dev \      
+    file \              
+    # Clean up apk cache to reduce image size
     && rm -rf /var/cache/apk/*
 
 # Install PHP extensions
@@ -33,8 +34,10 @@ RUN docker-php-ext-install -j$(nproc) \
     pdo_mysql \
     zip \
     gd \
-    mbstring \
-    bcmath
+    mbstring \           
+    bcmath \           
+    dom \               
+    fileinfo     
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
