@@ -22,11 +22,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        // Add the following conditional check
-        if ($this->app->environment('production')) {
-            URL::forceScheme('https');
-        }
+   public function boot()
+{
+    if (config('app.env') === 'production') {
+        URL::forceScheme('https');
     }
+}
 }
