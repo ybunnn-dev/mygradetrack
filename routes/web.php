@@ -26,3 +26,15 @@ Route::middleware([
 
     Route::put('/courses/{id}', [GradesController::class, 'updateCourse'])->name('courses.update');
 });
+
+
+Route::get('/laravel-log', function () {
+    $logPath = storage_path('logs/laravel.log');
+
+    if (!file_exists($logPath)) {
+        return 'Log file does not exist.';
+    }
+
+    return nl2br(e(file_get_contents($logPath)));
+});
+
