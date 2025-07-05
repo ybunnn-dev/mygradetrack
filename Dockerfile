@@ -1,4 +1,4 @@
-# Stage 1: Build assets with Node
+# Stage 1: Build frontend assets
 FROM node:20-alpine as nodebuild
 WORKDIR /app
 
@@ -6,38 +6,76 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN npm run build
+RUN npm run build --force # --force can help in non-interactive environments
 
-# Stage 2: Laravel app with PHP
-FROM php:8.2-cli
+# Stage 2: Laravel app with PHP-FPM and Nginx
+FROM php:8.2-fpm-alpine as laravelapp # IMPORTANT: Use fpm-alpine, not cli
+
+# Install system dependencies (including Nginx) and PHP extension development packages
+RUN apk update && apk add --no-cache \
+    build-base \          # Essential for compiling most PHP extensions
+    git \
+    curl \
+    zip \
+    unzip \
+    nginx \               # Install Nginx web server
+    libzip-dev \          # For 'zip' PHP extension
+    libpng-dev \          # For 'gd' PHP extension
+    libjpeg-turbo-dev \   # For JPEG support in 'gd'
+    libwebp-dev \         # For WebP support in 'gd'
+    libxml2-dev \         # For XML related PHP features
+    oniguruma-dev \       # For 'mbstring' PHP extension (crucial for Laravel)
+    # Clean up apk cache to reduce image size
+    && rm -rf /var/cache/apk/*
 
 # Install PHP extensions
-RUN apk add --no-cache \
-    zip unzip curl git libzip-dev libpng-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql zip gd
+# Use -j$(nproc) for parallel compilation to speed up build
+RUN docker-php-ext-install -j$(nproc) \
+    pdo \
+    pdo_mysql \
+    zip \
+    gd \
+    mbstring \ # Install mbstring (required by Laravel)
+    bcmath     # Install bcmath (often needed by Laravel/Composer)
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Set Laravel working directory
 WORKDIR /var/www
 
-# Copy application files
+# Copy application source (ensure .dockerignore is set up to exclude node_modules, .git, etc.)
 COPY . .
 
-# Copy built Vite assets
-COPY --from=nodebuild /app/public /var/www/public
+# Copy built frontend from nodebuild stage
+# This copies the 'build' directory containing compiled assets from Vite
+COPY --from=nodebuild /app/public/build /var/www/public/build
+
+# Configure Nginx for Laravel
+# Copy your custom Nginx configuration file
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Set correct permissions for Laravel directories
+# www-data is the user PHP-FPM runs as in these images
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache \
+    && find /var/www -type d -exec chmod 755 {} \; \
+    && find /var/www -type f -exec chmod 644 {} \;
 
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Laravel cache clear to avoid stale views/config
-RUN php artisan config:clear && php artisan view:clear
+# Laravel production optimizations (clear caches and re-cache for production)
+RUN php artisan config:clear && php artisan view:clear # Clear development caches
+RUN php artisan config:cache # Cache config for production
+# RUN php artisan route:cache # Uncomment if your routes are not dynamic
+# RUN php artisan view:cache  # Uncomment if you want view cache
 
-# Permissions
-RUN chmod -R 755 storage bootstrap/cache
+# Expose Nginx's default HTTP port
+EXPOSE 80
 
-# Expose port
-EXPOSE 8000
-
-# Run Laravel using PHP built-in server (serves static assets too)
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+# Custom entrypoint to run PHP-FPM and Nginx simultaneously
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["nginx"] # Nginx will be started by the entrypoint script
