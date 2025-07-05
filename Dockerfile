@@ -1,15 +1,14 @@
 # Stage 1: Build frontend assets
 FROM node:20-alpine as nodebuild
 WORKDIR /app
-
 COPY package*.json ./
 RUN npm install
-
 COPY . .
 RUN npm run build --force # --force can help in non-interactive environments
-# No blank line here!
+
 # Stage 2: Laravel app with PHP-FPM and Nginx
-FROM php:8.2-fpm-alpine as laravelapp # IMPORTANT: Use fpm-alpine, not cli
+# IMPORTANT: Use fpm-alpine, not cli
+FROM php:8.2-fpm-alpine as laravelapp
 
 # Install system dependencies (including Nginx) and PHP extension development packages
 RUN apk update && apk add --no-cache \
@@ -77,5 +76,6 @@ EXPOSE 80
 # Custom entrypoint to run PHP-FPM and Nginx simultaneously
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["nginx"] # Nginx will be started by the entrypoint script
