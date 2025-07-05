@@ -12,19 +12,18 @@ FROM php:8.2-fpm-alpine as laravelapp
 
 # Install system dependencies (including Nginx) and PHP extension development packages
 RUN apk update && apk add --no-cache \
-    build-base \          # Essential for compiling most PHP extensions
+    build-base \
     git \
     curl \
     zip \
     unzip \
-    nginx \               # Install Nginx web server
-    libzip-dev \          # For 'zip' PHP extension
-    libpng-dev \          # For 'gd' PHP extension
-    libjpeg-turbo-dev \   # For JPEG support in 'gd'
-    libwebp-dev \         # For WebP support in 'gd'
-    libxml2-dev \         # For XML related PHP features
-    oniguruma-dev \       # For 'mbstring' PHP extension (crucial for Laravel)
-    # Clean up apk cache to reduce image size
+    nginx \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    libxml2-dev \
+    oniguruma-dev \
     && rm -rf /var/cache/apk/*
 
 # Install PHP extensions
@@ -34,8 +33,8 @@ RUN docker-php-ext-install -j$(nproc) \
     pdo_mysql \
     zip \
     gd \
-    mbstring \ # Install mbstring (required by Laravel)
-    bcmath     # Install bcmath (often needed by Laravel/Composer)
+    mbstring \
+    bcmath
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -65,8 +64,8 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
 RUN composer install --no-dev --optimize-autoloader
 
 # Laravel production optimizations (clear caches and re-cache for production)
-RUN php artisan config:clear && php artisan view:clear # Clear development caches
-RUN php artisan config:cache # Cache config for production
+RUN php artisan config:clear && php artisan view:clear
+RUN php artisan config:cache
 # RUN php artisan route:cache # Uncomment if your routes are not dynamic
 # RUN php artisan view:cache  # Uncomment if you want view cache
 
@@ -78,4 +77,4 @@ COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["nginx"] # Nginx will be started by the entrypoint script
+CMD ["nginx"]
