@@ -51,7 +51,7 @@ COPY --from=nodebuild /app/public/build /var/www/public/build
 
 # Configure Nginx for Laravel
 # Copy your custom Nginx configuration file
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 # Set correct permissions for Laravel directories
 # www-data is the user PHP-FPM runs as in these images
