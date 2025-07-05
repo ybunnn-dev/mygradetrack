@@ -1,72 +1,81 @@
-# Complete nginx.conf file (use this if the conf.d approach doesn't work)
-user www-data;
-worker_processes auto;
-pid /run/nginx.pid;
+# Stage 1: Build frontend assets
+FROM node:20-alpine as nodebuild
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build --force # --force can help in non-interactive environments
 
-events {
-    worker_connections 1024;
-}
+# Stage 2: Laravel app with PHP-FPM and Nginx
+# IMPORTANT: Use fpm-alpine, not cli
+FROM php:8.2-fpm-alpine as laravelapp
 
-http {
-    include /etc/nginx/mime.types;
-    default_type application/octet-stream;
+# Install system dependencies (including Nginx) and PHP extension development packages
+RUN apk update && apk add --no-cache \
+    build-base \          # Essential for compiling most PHP extensions
+    git \
+    curl \
+    zip \
+    unzip \
+    nginx \               # Install Nginx web server
+    libzip-dev \          # For 'zip' PHP extension
+    libpng-dev \          # For 'gd' PHP extension
+    libjpeg-turbo-dev \   # For JPEG support in 'gd'
+    libwebp-dev \         # For WebP support in 'gd'
+    libxml2-dev \         # For XML related PHP features
+    oniguruma-dev \       # For 'mbstring' PHP extension (crucial for Laravel)
+    # Clean up apk cache to reduce image size
+    && rm -rf /var/cache/apk/*
 
-    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
-                    '$status $body_bytes_sent "$http_referer" '
-                    '"$http_user_agent" "$http_x_forwarded_for"';
+# Install PHP extensions
+# Use -j$(nproc) for parallel compilation to speed up build
+RUN docker-php-ext-install -j$(nproc) \
+    pdo \
+    pdo_mysql \
+    zip \
+    gd \
+    mbstring \ # Install mbstring (required by Laravel)
+    bcmath     # Install bcmath (often needed by Laravel/Composer)
 
-    access_log /var/log/nginx/access.log main;
-    error_log /var/log/nginx/error.log;
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    keepalive_timeout 65;
-    types_hash_max_size 2048;
+# Set Laravel working directory
+WORKDIR /var/www
 
-    gzip on;
-    gzip_vary on;
-    gzip_proxied any;
-    gzip_comp_level 6;
-    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+# Copy application source (ensure .dockerignore is set up to exclude node_modules, .git, etc.)
+COPY . .
 
-    server {
-        listen 80;
-        server_name _;
-        root /var/www/public;
+# Copy built frontend from nodebuild stage
+# This copies the 'build' directory containing compiled assets from Vite
+COPY --from=nodebuild /app/public/build /var/www/public/build
 
-        # Basic Nginx headers for security
-        add_header X-Frame-Options "SAMEORIGIN";
-        add_header X-XSS-Protection "1; mode=block";
-        add_header X-Content-Type-Options "nosniff";
+# Configure Nginx for Laravel
+# Copy your custom Nginx configuration file
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
-        index index.php index.html index.htm;
+# Set correct permissions for Laravel directories
+# www-data is the user PHP-FPM runs as in these images
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache \
+    && find /var/www -type d -exec chmod 755 {} \; \
+    && find /var/www -type f -exec chmod 644 {} \;
 
-        charset utf-8;
+# Install Laravel dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-        # Try serving static files directly, then fall back to index.php for Laravel routing
-        location / {
-            try_files $uri $uri/ /index.php?$query_string;
-        }
+# Laravel production optimizations (clear caches and re-cache for production)
+RUN php artisan config:clear && php artisan view:clear # Clear development caches
+RUN php artisan config:cache # Cache config for production
+# RUN php artisan route:cache # Uncomment if your routes are not dynamic
+# RUN php artisan view:cache  # Uncomment if you want view cache
 
-        # Handle PHP files by passing requests to PHP-FPM
-        location ~ \.php$ {
-            # This points to the PHP-FPM process (it runs on port 9000 by default)
-            # Since PHP-FPM is running in the same container, use 127.0.0.1 (localhost)
-            fastcgi_pass 127.0.0.1:9000;
-            fastcgi_index index.php;
-            fastcgi_buffers 16 16k;
-            fastcgi_buffer_size 32k;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include fastcgi_params;
-        }
+# Expose Nginx's default HTTP port
+EXPOSE 80
 
-        # Deny access to hidden files (except for .well-known for SSL validation)
-        location ~ /\.(?!well-known).* {
-            deny all;
-        }
+# Custom entrypoint to run PHP-FPM and Nginx simultaneously
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-        # Handle 404 errors by passing them to Laravel's index.php
-        error_page 404 /index.php;
-    }
-}
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["nginx"] # Nginx will be started by the entrypoint script
