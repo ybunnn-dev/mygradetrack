@@ -26,7 +26,8 @@ WORKDIR /var/www
 COPY . .
 
 # Copy built frontend from nodebuild
-COPY --from=nodebuild /app/public/build /var/www/public/build
+COPY --from=nodebuild /app/public /var/www/public
+COPY --from=nodebuild /app/resources /var/www/resources
 
 # Install Laravel dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
