@@ -13,20 +13,20 @@ FROM php:8.2-fpm-alpine as laravelapp # IMPORTANT: Use fpm-alpine, not cli
 
 # Install system dependencies (including Nginx) and PHP extension development packages
 RUN apk update && apk add --no-cache \
-    build-base \          # Essential for compiling most PHP extensions
+    build-base \
     git \
     curl \
     zip \
     unzip \
-    nginx \               # Install Nginx web server
-    libzip-dev \          # For 'zip' PHP extension
-    libpng-dev \          # For 'gd' PHP extension
-    libjpeg-turbo-dev \   # For JPEG support in 'gd'
-    libwebp-dev \         # For WebP support in 'gd'
-    libxml2-dev \         # For XML related PHP features
-    oniguruma-dev \       # For 'mbstring' PHP extension (crucial for Laravel)
-    # Clean up apk cache to reduce image size
+    nginx \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    libxml2-dev \
+    oniguruma-dev \
     && rm -rf /var/cache/apk/*
+
 
 # Install PHP extensions
 # Use -j$(nproc) for parallel compilation to speed up build
