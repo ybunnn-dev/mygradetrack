@@ -7,26 +7,26 @@ RUN npm install
 
 COPY . .
 RUN npm run build --force # --force can help in non-interactive environments
-
+# No blank line here!
 # Stage 2: Laravel app with PHP-FPM and Nginx
 FROM php:8.2-fpm-alpine as laravelapp # IMPORTANT: Use fpm-alpine, not cli
 
 # Install system dependencies (including Nginx) and PHP extension development packages
 RUN apk update && apk add --no-cache \
-    build-base \
+    build-base \          # Essential for compiling most PHP extensions
     git \
     curl \
     zip \
     unzip \
-    nginx \
-    libzip-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    libwebp-dev \
-    libxml2-dev \
-    oniguruma-dev \
+    nginx \               # Install Nginx web server
+    libzip-dev \          # For 'zip' PHP extension
+    libpng-dev \          # For 'gd' PHP extension
+    libjpeg-turbo-dev \   # For JPEG support in 'gd'
+    libwebp-dev \         # For WebP support in 'gd'
+    libxml2-dev \         # For XML related PHP features
+    oniguruma-dev \       # For 'mbstring' PHP extension (crucial for Laravel)
+    # Clean up apk cache to reduce image size
     && rm -rf /var/cache/apk/*
-
 
 # Install PHP extensions
 # Use -j$(nproc) for parallel compilation to speed up build
