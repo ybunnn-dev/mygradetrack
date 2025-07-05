@@ -70,7 +70,7 @@ RUN php artisan config:cache
 # RUN php artisan view:cache  # Uncomment if you want view cache
 
 # Expose Nginx's default HTTP port
-EXPOSE ${PORT:-8080}
+EXPOSE 8080
 
 # Custom entrypoint to run PHP-FPM and Nginx simultaneously
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
