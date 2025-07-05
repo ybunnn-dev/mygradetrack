@@ -1,4 +1,4 @@
-# Stage 1: Build frontend assets with Node
+# Stage 1: Build assets with Node
 FROM node:20-alpine as nodebuild
 WORKDIR /app
 
@@ -9,34 +9,35 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Laravel app with PHP
-FROM php:8.2-fpm
+FROM php:8.2-cli
 
 # Install PHP extensions
-RUN apt-get update && apt-get install -y \
-    git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip bcmath gd
+RUN apk add --no-cache \
+    zip unzip curl git libzip-dev libpng-dev libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql zip gd
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Set working dir
 WORKDIR /var/www
 
-# Copy app source
+# Copy application files
 COPY . .
 
-# Copy built frontend from nodebuild
+# Copy built Vite assets
 COPY --from=nodebuild /app/public /var/www/public
-COPY --from=nodebuild /app/resources /var/www/resources
 
 # Install Laravel dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader
+
+# Laravel cache clear to avoid stale views/config
+RUN php artisan config:clear && php artisan view:clear
 
 # Permissions
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
+RUN chmod -R 755 storage bootstrap/cache
 
-# Expose Laravel dev server
+# Expose port
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Run Laravel using PHP built-in server (serves static assets too)
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
