@@ -11,7 +11,7 @@ FROM php:8.2-fpm-alpine as laravelapp
 
 # Install system dependencies (including Nginx) and PHP extension development packages
 RUN apk update && apk add --no-cache \
-    build-base \          # Essential for compiling most PHP extensions
+    build-base \         
     git \
     curl \
     zip \
