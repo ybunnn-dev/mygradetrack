@@ -44,7 +44,7 @@ function updateSemesterDisplay(semester) {
     currentSemesterId = `${semester.id}`;
     if (semesterTitle) {
         semesterTitle.textContent = 
-            `${semester.semester}${semester.semester !== 'Midyear' ? 'ester' : ''} ${semester.start_year}-${semester.end_year}`
+            `${semester.semester}${semester.semester !== 'Midyear' ? 'ester' : ''} ${semester.start_year}-${semester.end_year}`;
     }
 }
 
