@@ -45,30 +45,7 @@ class GradesController extends Controller
             'courses' => $semester->courses
         ]);
     }
-    public function storeSemester(Request $request)
-        {
-            // Validate the request
-            $validated = $request->validate([
-                'semester' => 'required|string|in:1st,2nd,midyear',
-                'yearStart' => 'required|integer|min:2000|max:2100',
-                'yearEnd' => 'required|integer'
-            ]);
-
-            try {
-                // Create semester logic here
-                // Example: Semester::create($validated);
-                
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Semester added successfully!'
-                ]);
-            } catch (\Exception $e) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Error adding semester: ' . $e->getMessage()
-                ], 500);
-            }
-        }
+    
       public function storeCourse(Request $request)
         {
             $validated = $request->validate([

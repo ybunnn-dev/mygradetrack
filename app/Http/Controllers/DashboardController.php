@@ -32,31 +32,39 @@ class DashboardController extends Controller
         // ✅ Very important: close the cursor before making any new query
         $stmt->closeCursor();
 
-        // Now it's safe to query courses
-        $courses = DB::table('courses')
-            ->join('semesters', 'courses.semester_id', '=', 'semesters.id')
-            ->where('semesters.student_id', $userId)
-            ->select(
-                'courses.id',
-                'courses.course_name',
-                'courses.units',
-                'courses.grade',
-                'courses.remarks',
-                'courses.semester_id',
-                'semesters.semester',
-                'semesters.start_year',
-                'semesters.end_year'
-            )
-            ->orderBy('semesters.start_year')
-            ->orderByRaw("FIELD(semesters.semester, 'First Semester', 'Second Semester')")
-            ->get();
+      $courses = \App\Models\Course::with('semesters')
+        ->whereHas('semesters', fn($query) => $query->where('student_id', $userId))
+        ->get()
+        ->sortBy([
+            fn($course) => $course->semesters->start_year,
+            fn($course) => match(strtolower($course->semesters->semester)) {
+                'first semester' => 1,
+                'second semester' => 2,
+                default => 3,
+            },
+        ])
+        ->values()
+        ->map(function ($course) {
+            return [
+                'id' => $course->id,
+                'course_name' => $course->course_name,
+                'units' => $course->units,
+                'grade' => $course->grade,
+                'remarks' => $course->remarks,
+                'semester_id' => $course->semester_id,
+                'semester' => $course->semesters->semester ?? null,
+                'start_year' => $course->semesters->start_year ?? null,
+                'end_year' => $course->semesters->end_year ?? null,
+            ];
+        });
+
 
         $sortedSemesters = collect($semesterBreakdown)->sortBy([
-            fn ($s) => $s['start_year'],
+            fn ($s) => $s['start_year'], // ascending (older first)
             fn ($s) => match(strtolower($s['semester'])) {
                 '1st sem', 'first semester' => 1,
                 '2nd sem', 'second semester' => 2,
-                default => 3,
+                default => 3, // summer or any unknown
             },
         ])->values();
 

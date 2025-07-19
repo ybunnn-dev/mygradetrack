@@ -47,6 +47,7 @@ export default () => ({
                 this.open = false;
                 this.resetForm();
                 window.dispatchEvent(new CustomEvent('course-added', { detail: data }));
+                window.location.reload();
             } else {
                 alert(data.message || 'Unexpected error while adding course.');
             }

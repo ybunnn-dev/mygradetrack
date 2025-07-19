@@ -34,7 +34,7 @@
                                 >
                                     <div class="flex justify-between items-center">
                                         <div>
-                                            <div class="text-sm sm:text-base font-medium">{{ $semester->semester }}ester</div>
+                                            <div class="text-sm sm:text-base font-medium">{{ $semester->semester }}{{ $semester->semester !== 'Midyear' ? 'ester' : '' }}</div>
                                             <div class="text-xs text-gray-500">{{ $semester->start_year }}-{{ $semester->end_year }}</div>
                                         </div>
                                         @if($semester->gwa)

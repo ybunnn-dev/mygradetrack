@@ -18,11 +18,8 @@ class Course extends Model
         'remarks',
     ];
 
-    /**
-     * A course belongs to a semester.
-     */
     public function semesters()
     {
-        return $this->belongsTo(Semester::class);
+        return $this->belongsTo(Semester::class, 'semester_id', 'id');
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,19 +15,13 @@ class Semester extends Model
         'end_year',
     ];
 
-    /**
-     * A semester belongs to a student (user).
-     */
     public function student()
     {
         return $this->belongsTo(User::class, 'student_id');
     }
 
-    /**
-     * A semester has many courses.
-     */
     public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Course::class, 'semester_id', 'id');
     }
 }

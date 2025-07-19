@@ -54,6 +54,7 @@ export default () => ({
                         updatedCourse: data.course
                     }
                 }));
+                window.location.reload();
             } else {
                 alert(data.message || 'Error updating course.');
             }
