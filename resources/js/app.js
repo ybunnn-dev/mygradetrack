@@ -25,4 +25,4 @@ document.addEventListener('alpine:init', () => {
 });
 
 // IMPORTANT: If Livewire is managing Alpine, this line should remain commented out/removed
-//Alpine.start();
+Alpine.start();
