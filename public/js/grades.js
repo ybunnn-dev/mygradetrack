@@ -29,7 +29,6 @@ function loadSemesterGrades(semesterId) {
             return response.json();
         })
         .then(data => {
-            console.log(allCourses);
             updateSemesterDisplay(data.semester);
             updateCoursesTable(data.courses);
         })
@@ -44,7 +43,7 @@ function updateSemesterDisplay(semester) {
     currentSemesterId = `${semester.id}`;
     if (semesterTitle) {
         semesterTitle.textContent = 
-            `${semester.semester}${semester.semester !== 'Midyear' ? 'ester' : ''} ${semester.start_year}-${semester.end_year}`;
+           `${semester.semester} ${semester.start_year}-${semester.end_year}`;
     }
 }
 
