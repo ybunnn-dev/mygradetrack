@@ -1,4 +1,5 @@
 <x-app-layout>
+    
     @section('title', 'Grades')
     <div class="min-h-screen bg-mainback flex flex-col">
         <div class="flex-1 overflow-y-auto">

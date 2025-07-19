@@ -18,7 +18,7 @@ export default () => ({
             return;
         }
 
-        const showRoute = window.routes.showSemester.replace(':id', this.semesterId);
+        const showRoute = `/semesters/${this.semesterId}`;
 
         fetch(showRoute, {
             method: 'GET',
@@ -44,12 +44,21 @@ export default () => ({
     },
 
     submit() {
+        console.log('Submit called with:', {
+            semester: this.semester,
+            yearStart: this.yearStart,
+            yearEnd: this.yearEnd,
+            semesterId: this.semesterId
+        });
+
         if (!this.semester || !this.yearStart) {
             alert('Please fill in all required fields.');
             return;
         }
 
-        const updateRoute = window.routes.updateSemester.replace(':id', this.semesterId);
+        const updateRoute = `/semesters/${this.semesterId}`;
+        console.log('Update route:', updateRoute);
+        
         const submitBtn = this.$el.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         
@@ -85,6 +94,7 @@ export default () => ({
                         yearEnd: data.yearEnd
                     }
                 }));
+                window.location.reload();
             } else {
                 alert(data.message || 'Failed to update semester.');
             }
@@ -100,16 +110,23 @@ export default () => ({
     },
 
     deleteSemester() {
+        console.log('Delete called with semesterId:', this.semesterId);
+        
         if (!confirm('Are you sure you want to delete this semester? All associated courses will also be deleted.')) {
             return;
         }
 
-        const deleteRoute = window.routes.deleteSemester.replace(':id', this.semesterId);
-        const deleteBtn = this.$el.querySelector('button[text-red-700]');
-        const originalText = deleteBtn.textContent;
-        
-        deleteBtn.textContent = 'Deleting...';
-        deleteBtn.disabled = true;
+        const deleteRoute = `/semesters/${this.semesterId}`;
+        console.log('Delete route:', deleteRoute);
+
+        const deleteBtn = this.$el.querySelector('.delete-btn');
+
+        let originalText;
+        if (deleteBtn) {
+            originalText = deleteBtn.textContent;
+            deleteBtn.textContent = 'Deleting...';
+            deleteBtn.disabled = true;
+        }
 
         fetch(deleteRoute, {
             method: 'DELETE',
@@ -132,6 +149,7 @@ export default () => ({
                         id: this.semesterId
                     }
                 }));
+                window.location.reload();
             } else {
                 alert(data.message || 'Failed to delete semester.');
             }
@@ -141,8 +159,11 @@ export default () => ({
             alert('Error: ' + error.message);
         })
         .finally(() => {
-            deleteBtn.textContent = originalText;
-            deleteBtn.disabled = false;
+            if (deleteBtn) {
+                deleteBtn.textContent = originalText;
+                deleteBtn.disabled = false;
+            }
         });
     }
+
 });

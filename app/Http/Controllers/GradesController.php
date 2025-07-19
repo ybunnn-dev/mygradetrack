@@ -129,5 +129,24 @@ class GradesController extends Controller
                 ], 500);
             }
         }
+        public function destroyCourse($id)
+        {
+            $course = Course::find($id);
+
+            if (!$course) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Course not found.'
+                ], 404);
+            }
+
+            $course->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Course deleted successfully.'
+            ]);
+        }
+
 
 }

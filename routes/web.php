@@ -27,7 +27,10 @@ Route::middleware([
     Route::get('/metrics', [MetricsController::class, 'index'])->name('metrics');
     Route::get('/semesters/{semester}/courses', [GradesController::class, 'getCourses']);
     Route::get('/edit-course', [GradesController::class, 'getUserCourses']);
-
+    Route::get('/semesters/{id}', [SemesterController::class, 'show'])->name('semesters.show');
+    Route::put('/semesters/{id}', [SemesterController::class, 'update'])->name('semesters.update');
+    Route::delete('/semesters/{id}', [SemesterController::class, 'destroy'])->name('semesters.destroy');
     Route::put('/courses/{id}', [GradesController::class, 'updateCourse'])->name('courses.update');
+    Route::delete('/courses/{id}', [GradesController::class, 'destroyCourse'])->name('courses.destroy');
 });
 

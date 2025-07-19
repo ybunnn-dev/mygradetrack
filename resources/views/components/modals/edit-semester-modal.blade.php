@@ -31,7 +31,7 @@
             x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            class="relative w-full mx-4 sm:mx-auto sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/4 max-w-md transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all"
+            class="relative w-full mx-4 sm:mx-auto sm:w-10/12 md:w-3/4 lg:w-1/2 xl:w-1/3 max-w-xl transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all"
             @click.stop
         >
             <form @submit.prevent="submit">
@@ -136,7 +136,7 @@
                     <button 
                         @click.prevent="deleteSemester()"
                         type="button"
-                        class="w-full inline-flex justify-center rounded-md bg-red-100 px-3 py-2 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-200 transition-colors focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-auto"
+                        class="delete-btn w-full inline-flex justify-center rounded-md bg-red-100 px-3 py-2 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-200 transition-colors focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-auto"
                     >
                         Delete Semester
                     </button>

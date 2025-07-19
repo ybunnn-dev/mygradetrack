@@ -102,7 +102,7 @@ function showError(message) {
 
 // Make these functions available globally for inline event handlers
 window.loadSemesterGrades = loadSemesterGrades;
-// Function to handle adding a new semester
+
 function addSemester() {
   openSemesterModal();
 }
@@ -171,18 +171,38 @@ async function loadAllCourses() {
 document.addEventListener('DOMContentLoaded', () => {
   loadAllCourses().catch(e => console.error('Initial load failed:', e));
 });
+
 // Function to delete a course
 window.deleteCourse = function(id) {
-  if (confirm('Are you sure you want to delete this course?')) {
-    const semesterCourses = courses[currentSemesterId] || [];
-    const index = semesterCourses.findIndex(c => c.id === courseId);
-    
-    if (index > -1) {
-      semesterCourses.splice(index, 1);
-      updateGradesTable(semesterCourses);
-      updateSemesterGPA();
+  if (!confirm('Are you sure you want to delete this course?')) return;
+
+  fetch(`/courses/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
     }
-  }
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Failed to delete course from server.');
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+      // Remove from local list and update table
+      const semesterCourses = allCourses[currentSemesterId] || [];
+      const index = semesterCourses.findIndex(c => c.id === id);
+      if (index > -1) {
+        window.location.reload();
+      }
+    } else {
+      alert(data.message || 'Failed to delete course.');
+    }
+  })
+  .catch(error => {
+    console.error('Delete error:', error);
+    alert('An error occurred while deleting the course.');
+  });
 }
 
 // Function to update grades table with new data

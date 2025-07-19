@@ -97,19 +97,25 @@
                     class="flex items-center justify-between w-full"
                 >
                     {{-- Profile Info --}}
-                   <div class="flex items-center">
+                  <div class="flex items-center">
                         <img
                             src="{{ asset('images/fox.jpg') }}"
                             class="w-8 h-8 rounded-full object-cover"
                         >
                         <div
-                            class="flex flex-col justify-center leading-tight transition-all duration-200"
+                            class="flex flex-col justify-center items-start leading-tight ml-3 transition-all duration-200"
                             :class="{ 'opacity-0 invisible': !open, 'opacity-100 visible': open }"
                         >
-                            <p class="text-sm font-medium leading-tight">John Ivan</p>
-                            <p class="text-xs text-white/60 leading-tight ml-4">3rd Year - BSIT</p>
+                            @php
+                                $nameParts = explode(' ', Auth::user()->name);
+                                $shortName = implode(' ', array_slice($nameParts, 0, 2));
+                            @endphp
+
+                            <p class="text-sm font-medium leading-tight">{{ $shortName }}</p>
+                            <p class="text-xs text-white/60 leading-tight">Super Gay</p>
                         </div>
                     </div>
+
                     {{-- Arrow SVG --}}
                     <svg
                         viewBox="0 0 24 24"
