@@ -60,7 +60,7 @@
                             <div class="flex justify-between items-center mb-3 sm:mb-4">
                                 <h2 class="text-base sm:text-lg font-semibold text-text_heavy">Grades for <span id="current-semester">
                                     @if($semesters->isNotEmpty())
-                                        {{ $semesters->first()->semester }}ester {{ $semesters->first()->start_year }}-{{ $semesters->first()->end_year }}
+                                        {{ $semesters->first()->semester }}{{ $semesters->first()->semester !== 'Midyear' ? 'ester' : '' }} {{ $semesters->first()->start_year }}-{{ $semesters->first()->end_year }}
                                     @else
                                         No Semesters
                                     @endif
