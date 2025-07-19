@@ -1,0 +1,240 @@
+[33mcommit 045e9f5e5c5d550794d72c5d1a3ff9af084d7df9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/belaro-branch[m[33m, [m[1;32mbelaro-fresh[m[33m, [m[1;32mbelaro-branch[m[33m)[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Thu Jul 17 14:10:50 2025 +0800
+
+    Removed Unneccesary files
+
+[33mcommit 394725dbe8ac6c1d658008138da9742b75b5dbfc[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sun Jul 6 01:23:53 2025 +0800
+
+    Update AppServiceProvider.php
+
+[33mcommit 5774bc3cbd00722129ea9250565c23b80307a222[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sun Jul 6 01:07:48 2025 +0800
+
+    Update AppServiceProvider.php
+
+[33mcommit 80703c86f670cd74bc9e3c583fdd59b0af5e6532[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sun Jul 6 00:55:31 2025 +0800
+
+    Delete Dockerfile
+
+[33mcommit 727724ca60016198724eae9bf2403b057e4729c2[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:54:56 2025 +0800
+
+    Update entrypoint.sh
+
+[33mcommit b2217b55b83e3839907c5ea39ca5097a0a70c0ab[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:54:27 2025 +0800
+
+    Update nginx.conf
+
+[33mcommit 8eb83dad072f70ab8e0434d2cce75da39be3f5b1[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:44:38 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit 591e8b1b153142aac67fceaa16f615a69b76c46f[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:44:02 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit fcec8af83048d3191754862458713da9e44fbe9e[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:31:20 2025 +0800
+
+    Update web.php
+
+[33mcommit a512c6f39375d5c541b1f5318147235b8deecaad[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:23:14 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit 68f58c2d1bfc0f72176e49dece3e64dcad6c682d[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:21:07 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit abd294eee4f1590247b2c687988607b9c0f28369[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:20:37 2025 +0800
+
+    Update entrypoint.sh
+
+[33mcommit b64d416cb9fe2dd5234e46bd94cf82c8768df66d[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 23:20:18 2025 +0800
+
+    Update nginx.conf
+
+[33mcommit 8f0ecd47fc1099c749bbf68346c5074d7c0ee130[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:47:53 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit 48a7f9f2ccd5f19b654907985de4dbf759defd41[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:47:01 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit 25b204db173c81ef73ff9f0d3543ca76e8c38b94[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:38:22 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit 260741de38c911758d7c88f7320acf7cef979599[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:37:12 2025 +0800
+
+    Update nginx.conf
+
+[33mcommit 6632e8896150d50eea7b63caab107ee6c1a1f833[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:36:42 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit dcede22b892d1778de1df4fd4e827707627c88ac[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:36:19 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit 4806cee72df91b97b6b0b286756532c68154dfb4[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:31:46 2025 +0800
+
+    Update nginx.conf
+
+[33mcommit d4f02dcf566de3cfd0717834eb2cfbb95b691b56[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:26:07 2025 +0800
+
+    Update nginx.conf
+
+[33mcommit dabd97e317f05e595a151b2ed7ae90f2d1520dfd[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:09:12 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit c9b96aa24539adc9338692d67457762027c757f4[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:07:43 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit e8f2f281357eadfa3a7ac5129d74ab7ac814a037[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:06:04 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit ae95e3c8f5f1125fae2c7bc9f2dfc180b1ab6d0a[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:04:26 2025 +0800
+
+    Update Dockerfile
+
+[33mcommit 813fc5537eac6af31cfd936611f9b4ea414fa7a0[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Sat Jul 5 22:00:44 2025 +0800
+
+    nginx
+
+[33mcommit e1c18a245cb51fb9b8a1d4592381435bca194e7d[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Sat Jul 5 21:55:32 2025 +0800
+
+    Dockerfile fix attempt 2
+
+[33mcommit 1d6bb5c148d89721ad5dcf4c3328480eca473c6a[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Sat Jul 5 21:35:39 2025 +0800
+
+    Dockerfile issue was addressed to complete deployment
+
+[33mcommit aa57bce029e39beaede6a0bec0b855255664b655[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Sat Jul 5 21:31:02 2025 +0800
+
+    Welcome Page Fixed
+
+[33mcommit 8ab365c464d57f8b8e65f966b5e235124aaeaba8[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Fri Jul 4 13:13:34 2025 +0800
+
+    added dockerfile
+
+[33mcommit 5a2de41405e27ec059bbfda1e3552bf8bb1b34b4[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Fri Jul 4 12:32:49 2025 +0800
+
+    Added Seeders
+
+[33mcommit 6a6b7775d79ebf62a8a9557653189a8360094340[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Fri Jul 4 12:27:52 2025 +0800
+
+    Gay Update
+
+[33mcommit ba9d2f94e92c58316f9e0094db7cf3cf0ea51737[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Wed Jul 2 21:10:14 2025 +0800
+
+    ReadMe.md
+
+[33mcommit 28ca48047dc8e4f3990f8d99df6307bae68e545a[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Wed Jul 2 21:08:53 2025 +0800
+
+    Development Ready
+
+[33mcommit 383280c98992a436bf1bea585672e166e5223845[m
+Merge: 6066499 06fa50f
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Wed Jul 2 21:05:55 2025 +0800
+
+    Merge branch 'main' of https://github.com/ybunnn-dev/mygradetrack
+
+[33mcommit 60664990a6e9e8a278980f15718b97b35881b542[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Wed Jul 2 21:04:31 2025 +0800
+
+    ReadMe.md now ready
+
+[33mcommit 06fa50f075f68ec2f3051a3fd43ecc870822e900[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Wed Jul 2 21:02:22 2025 +0800
+
+    Update README.md
+
+[33mcommit 4b76bb7dcec4694de0548bf390367d2b6e744d7e[m
+Author: Ybunnn_dev <belaroivan17@gmail.com>
+Date:   Wed Jul 2 21:01:21 2025 +0800
+
+    Update README.md
+
+[33mcommit dd1ae4f2eb4fe8d128b372ab15ef3fb30cadbecf[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Wed Jul 2 20:56:48 2025 +0800
+
+    Added ReadMe.md
+
+[33mcommit b2307fe1b10089005b2a92ee4c66f6d4c2e7e024[m
+Author: IvanNasaktan <belaroivan17@gmail.com>
+Date:   Wed Jul 2 20:42:29 2025 +0800
+
+    MyGradesTrack Initialization

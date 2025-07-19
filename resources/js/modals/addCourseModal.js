@@ -1,5 +1,3 @@
-// resources/js/modals/addCourseModal.js
-
 export default () => ({
     open: false,
     courseCode: '',
@@ -9,39 +7,38 @@ export default () => ({
 
     submit() {
         const gradeValue = parseFloat(this.grade);
-        if (isNaN(gradeValue) || gradeValue < 1.0 || gradeValue > 4.0) { // Added min/max validation for grade
+        if (isNaN(gradeValue) || gradeValue < 1.0 || gradeValue > 4.0) {
             alert('Please enter a valid grade between 1.0 and 4.0');
             return;
         }
 
-        // You might want to add validation for other fields as well
+        if (!window.currentSemesterId) {
+            alert('Semester is not selected. Please choose a semester first.');
+            return;
+        }
 
         const payload = {
-            courseCode: this.courseCode.toUpperCase(),
-            courseName: this.courseName,
-            units: this.units,
-            grade: this.grade,
-            // _token is no longer needed here as it's in the header
+            semester_id: window.currentSemesterId, // must exist
+            courseCode: this.courseCode.trim().toUpperCase(),
+            courseName: this.courseName.trim(),
+            units: parseInt(this.units),
+            grade: this.grade
         };
 
-        // Get CSRF token from the meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        // Use the globally defined route
-        fetch(window.routes.storeCourse, { // <--- Changed from '{{ route("courses.store") }}'
+        fetch('/store-course', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken // <--- Changed from payload._token
+                'X-CSRF-TOKEN': csrfToken
             },
             body: JSON.stringify(payload)
         })
-        .then(res => {
+        .then(async res => {
             if (!res.ok) {
-                // If the server sends back JSON with errors, parse it
-                return res.json().then(err => {
-                    throw new Error(err.message || 'Failed to add course');
-                });
+                const err = await res.json();
+                throw new Error(err.message || 'Failed to add course.');
             }
             return res.json();
         })
@@ -49,10 +46,9 @@ export default () => ({
             if (data.success) {
                 this.open = false;
                 this.resetForm();
-                // Consider adding a success message/notification here
                 window.dispatchEvent(new CustomEvent('course-added', { detail: data }));
             } else {
-                alert(data.message || 'Error adding course.');
+                alert(data.message || 'Unexpected error while adding course.');
             }
         })
         .catch(err => {

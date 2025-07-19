@@ -10,6 +10,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
+        'course_code',
         'semester_id',
         'course_name',
         'units',
@@ -20,7 +21,7 @@ class Course extends Model
     /**
      * A course belongs to a semester.
      */
-    public function semester()
+    public function semesters()
     {
         return $this->belongsTo(Semester::class);
     }

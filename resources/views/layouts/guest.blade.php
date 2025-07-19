@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
+        <link rel="icon" href="{{ asset('images/icons/logo.svg') }}" type="image/svg+xml">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -17,8 +17,8 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body>
-        <div class="font-sans text-gray-900 antialiased">
+    <body class="bg-navgreen">
+        <div {{ $attributes->merge(['class' => 'font-sans text-gray-900 antialiased']) }}>
             {{ $slot }}
         </div>
 
