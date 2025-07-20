@@ -155,6 +155,6 @@
     <x-modals.edit-course-modal />
     
     @push('scripts')
-        <script src="{{ asset('js/grades.js') }}" defer></script>
+        @vite(['resources/js/pages/grades.js'])
     @endpush
 </x-app-layout>
