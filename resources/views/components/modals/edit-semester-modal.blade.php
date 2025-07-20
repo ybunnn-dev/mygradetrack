@@ -34,7 +34,7 @@
             class="relative w-full mx-4 sm:mx-auto sm:w-10/12 md:w-3/4 lg:w-1/2 xl:w-1/3 max-w-xl transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all"
             @click.stop
         >
-            <form @submit.prevent="submit">
+            <form @submit.prevent="promptUpdateConfirmation">
                 <!-- Modal content -->
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6">
                     <div class="w-full">
@@ -142,11 +142,11 @@
                     </button>
                     
                     <!-- Save changes button -->
-                    <button 
-                        type="submit"
+                    <button
+                        type="submit" 
                         class="w-full inline-flex justify-center rounded-md bg-navgreen px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-700 transition-colors focus:ring-2 focus:ring-green-600 focus:ring-offset-2 sm:w-auto"
-                        :disabled="!selected || !yearStart"
-                        :class="{ 'opacity-50 cursor-not-allowed': !selected || !yearStart }"
+                        :disabled="!semester || !yearStart" 
+                        :class="{ 'opacity-50 cursor-not-allowed': !semester || !yearStart }" 
                     >
                         Save Changes
                     </button>

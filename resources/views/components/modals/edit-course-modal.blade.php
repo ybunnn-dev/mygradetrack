@@ -90,8 +90,9 @@
                     >
                         Cancel
                     </button>
-                    <button 
-                        type="submit"
+                    <button
+                        type="button" {{-- Changed to type="button" to prevent default form submission if it were in a form --}}
+                        @click="promptEditConfirmation()" {{-- Explicitly call the function on click --}}
                         class="w-full inline-flex justify-center rounded-md bg-navgreen px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-700 transition-colors focus:ring-2 focus:ring-green-600 focus:ring-offset-2 sm:w-auto"
                     >
                         Update Course

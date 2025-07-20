@@ -112,17 +112,20 @@
                     >
                         Cancel
                     </button>
-                    <button 
-                        type="submit"
+                    
+                   <button 
+                        type="button"
                         x-ref="submitButton"
+                        @click="confirmSubmit"
                         class="w-full sm:w-auto justify-center rounded-md bg-navgreen px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-700 focus:ring-2 focus:ring-green-600 focus:ring-offset-2"
-                        :disabled="isLoading || !semester || !yearStart"
-                        :class="{ 'opacity-50 cursor-not-allowed': isLoading || !semester || !yearStart }"
+                        :disabled="!semester || !yearStart"
+                        :class="{ 'opacity-50 cursor-not-allowed': !semester || !yearStart }"
                     >
-                        <span x-show="!isLoading">Confirm</span>
-                        <span x-show="isLoading">Adding...</span>
+                        Add Semester
                     </button>
+
                 </div>
+
             </form>
         </div>
     </div>

@@ -17,8 +17,19 @@ export default () => ({
             return;
         }
 
+        // --- ADJUSTMENT HERE ---
+        // Dispatch the generic 'show-confirmation' event
+        window.dispatchEvent(new CustomEvent('show-confirmation', {
+            detail: {
+                message: `Are you sure you want to add the course "${this.courseName}"?`,
+                onConfirm: () => this.performSubmit() // Pass the specific action to perform
+            }
+        }));
+    },
+
+    performSubmit() {
         const payload = {
-            semester_id: window.currentSemesterId, // must exist
+            semester_id: window.currentSemesterId,
             courseCode: this.courseCode.trim().toUpperCase(),
             courseName: this.courseName.trim(),
             units: parseInt(this.units),
@@ -44,7 +55,7 @@ export default () => ({
         })
         .then(data => {
             if (data.success) {
-                this.open = false;
+                this.open = false; // Close the add course modal
                 this.resetForm();
                 window.dispatchEvent(new CustomEvent('course-added', { detail: data }));
                 window.location.reload();

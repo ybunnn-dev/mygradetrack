@@ -45,6 +45,20 @@ document.addEventListener('DOMContentLoaded', function () {
         semesterItems.forEach(item => item.classList.remove('bg-mainback', 'font-semibold'));
         activeItem.classList.add('bg-mainback', 'font-semibold');
     }
+
+    // Animate the dots (...)
+    const dots = document.getElementById('dots');
+    let count = 0;
+    setInterval(() => {
+          count = (count + 1) % 4;
+          dots.textContent = '.'.repeat(count) || '.';
+      }, 500);
+
+      // Simulate delay (adjust as needed)
+      setTimeout(() => {
+          document.getElementById('loading-screen').style.display = 'none';
+          document.getElementById('main-content').hidden = false;
+      }, 600); // 600ms or until DOM is ready
 });
 
 

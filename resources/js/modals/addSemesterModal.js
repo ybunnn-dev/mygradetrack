@@ -19,22 +19,34 @@ export default () => ({
         this.semester = option;
         this.dropdownOpen = false;
     },
-
-   async submit() {
+    confirmSubmit() {
+        this.submit(new Event('submit'));
+    },
+   submit(event) {
         event.preventDefault();
-        
+
         if (!this.semester || !this.yearStart) {
             alert('Please fill in all required fields.');
             return;
         }
 
+        const displaySemester = this.semester === '1st Semester' ? '1st Sem'
+                                : this.semester === '2nd Semester' ? '2nd Sem'
+                                : this.semester;
+
+        const displayYear = `${this.yearStart}-${parseInt(this.yearStart) + 1}`;
+
+        // Dispatch the generic 'show-confirmation' event
+        window.dispatchEvent(new CustomEvent('show-confirmation', {
+            detail: {
+                message: `Add ${displaySemester} ${displayYear}?`,
+                onConfirm: () => this.performSubmit(displaySemester) // Pass the specific action
+            }
+        }));
+    },
+    async performSubmit(finalSemester) {
         this.isLoading = true;
-        
-        if(this.semester === '1st Semester'){
-            this.semester = '1st Sem';
-        }else if(this.semester === '2nd Semester'){
-            this.semester = '2nd Sem';
-        }
+
         try {
             const response = await fetch('/semesters/add', {
                 method: 'POST',
@@ -44,30 +56,27 @@ export default () => ({
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    semester: this.semester,
+                    semester: finalSemester,
                     yearStart: this.yearStart,
                     yearEnd: this.yearEnd
                 })
             });
 
             const data = await response.json();
-            
+
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to create semester');
             }
 
-            this.open = false;
+            this.open = false; // Close the add semester modal
             this.semester = '';
             this.yearStart = new Date().getFullYear().toString();
-            
-            window.dispatchEvent(new CustomEvent('semester-added', {
-                detail: data
-            }));
-            
-            // Optional: Show success message
+
+            window.dispatchEvent(new CustomEvent('semester-added', { detail: data }));
+
             alert('Semester created successfully!');
             window.location.reload();
-            
+
         } catch (error) {
             console.error('Error:', error);
             alert('Error: ' + error.message);

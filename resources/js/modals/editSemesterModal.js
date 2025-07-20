@@ -10,9 +10,8 @@ export default () => ({
     },
 
     loadSemesterData() {
-        // Get the currently selected semester ID (implementation depends on your app)
         this.semesterId = window.currentSemesterId;
-        
+
         if (!this.semesterId) {
             console.error('No semester ID found for editing');
             return;
@@ -43,8 +42,9 @@ export default () => ({
         });
     },
 
-    submit() {
-        console.log('Submit called with:', {
+    // --- New method to prompt confirmation for updating semester ---
+    promptUpdateConfirmation() {
+        console.log('Prompting update confirmation with:', {
             semester: this.semester,
             yearStart: this.yearStart,
             yearEnd: this.yearEnd,
@@ -56,14 +56,32 @@ export default () => ({
             return;
         }
 
+        const displaySemester = this.semester === '1st Semester' ? '1st Sem'
+                                : this.semester === '2nd Semester' ? '2nd Sem'
+                                : this.semester;
+        const displayYear = `${this.yearStart}-${parseInt(this.yearStart) + 1}`;
+
+        window.dispatchEvent(new CustomEvent('show-confirmation', {
+            detail: {
+                message: `Are you sure you want to update this semester to ${displaySemester} ${displayYear}?`,
+                onConfirm: () => this.performUpdateSubmit() // Callback for actual update
+            }
+        }));
+    },
+
+    // --- Renamed and refactored 'submit' to 'performUpdateSubmit' ---
+    performUpdateSubmit() {
         const updateRoute = `/semesters/${this.semesterId}`;
         console.log('Update route:', updateRoute);
-        
+
+        // Instead of directly manipulating the button here, you might consider an isLoading state
+        // or a global loading indicator if you have one. For simplicity, keeping direct manipulation.
         const submitBtn = this.$el.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Saving...';
-        submitBtn.disabled = true;
+        const originalText = submitBtn ? submitBtn.textContent : 'Update'; // Handle case if button not found
+        if (submitBtn) {
+            submitBtn.textContent = 'Saving...';
+            submitBtn.disabled = true;
+        }
 
         fetch(updateRoute, {
             method: 'PUT',
@@ -85,7 +103,7 @@ export default () => ({
         })
         .then(data => {
             if (data.success) {
-                this.open = false;
+                this.open = false; // Close the edit semester modal
                 window.dispatchEvent(new CustomEvent('semester-updated', {
                     detail: {
                         id: this.semesterId,
@@ -94,7 +112,8 @@ export default () => ({
                         yearEnd: data.yearEnd
                     }
                 }));
-                window.location.reload();
+                alert('Semester updated successfully!'); // Provide immediate feedback
+                window.location.reload(); // Reload or dynamically update UI
             } else {
                 alert(data.message || 'Failed to update semester.');
             }
@@ -104,23 +123,33 @@ export default () => ({
             alert('Error: ' + error.message);
         })
         .finally(() => {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
     },
 
-    deleteSemester() {
-        console.log('Delete called with semesterId:', this.semesterId);
-        
-        if (!confirm('Are you sure you want to delete this semester? All associated courses will also be deleted.')) {
-            return;
-        }
+    // --- New method to prompt confirmation for deleting semester ---
+    promptDeleteConfirmation() {
+        console.log('Prompting delete confirmation with semesterId:', this.semesterId);
+
+        window.dispatchEvent(new CustomEvent('show-confirmation', {
+            detail: {
+                message: `Are you sure you want to delete this semester? All associated courses will also be deleted.`,
+                onConfirm: () => this.performDeleteSemester() // Callback for actual deletion
+            }
+        }));
+    },
+
+    // --- Renamed and refactored 'deleteSemester' to 'performDeleteSemester' ---
+    performDeleteSemester() {
+        console.log('Performing delete with semesterId:', this.semesterId);
 
         const deleteRoute = `/semesters/${this.semesterId}`;
         console.log('Delete route:', deleteRoute);
 
-        const deleteBtn = this.$el.querySelector('.delete-btn');
-
+        const deleteBtn = this.$el.querySelector('.delete-btn'); // Assuming you still use a class for this button
         let originalText;
         if (deleteBtn) {
             originalText = deleteBtn.textContent;
@@ -137,19 +166,20 @@ export default () => ({
         })
         .then(res => {
             if (!res.ok) {
-                throw new Error('Failed to delete semester');
+                return res.json().then(err => { throw new Error(err.message || 'Server error'); });
             }
             return res.json();
         })
         .then(data => {
             if (data.success) {
-                this.open = false;
+                this.open = false; // Close the edit semester modal
                 window.dispatchEvent(new CustomEvent('semester-deleted', {
                     detail: {
                         id: this.semesterId
                     }
                 }));
-                window.location.reload();
+                alert('Semester deleted successfully!'); // Provide immediate feedback
+                window.location.reload(); // Reload or dynamically update UI
             } else {
                 alert(data.message || 'Failed to delete semester.');
             }
@@ -165,5 +195,4 @@ export default () => ({
             }
         });
     }
-
 });

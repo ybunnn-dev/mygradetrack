@@ -17,7 +17,7 @@ export default {
                 sans: ['Montserrat', 'sans-serif'],
             },
             colors: {
-                navgreen: '#129990', 
+                navgreen: '#129990',
                 mainback: '#E1E7ED',
                 f7: "#f7f7f7",
                 greenactive: "#148079",
@@ -26,6 +26,17 @@ export default {
                 text_light: "#697A8D",
                 for_magna: "#578FCA",
             },
+            // --- Add the keyframes and animation here ---
+            keyframes: {
+                spin: {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' },
+                }
+            },
+            animation: {
+                spin: 'spin 1s linear infinite',
+            }
+            // ------------------------------------------
         },
     },
 
