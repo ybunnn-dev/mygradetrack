@@ -59,15 +59,24 @@ class DashboardController extends Controller
         });
 
 
-        $sortedSemesters = collect($semesterBreakdown)->sortBy([
-            fn ($s) => $s['start_year'], // ascending (older first)
-            fn ($s) => match(strtolower($s['semester'])) {
-                '1st sem', 'first semester' => 1,
-                '2nd sem', 'second semester' => 2,
-                default => 3, // summer or any unknown
-            },
-        ])->values();
+        $semesterRank = fn($s) => match(strtolower($s['semester'])) {
+            '1st sem' => 1,
+            '2nd sem' => 2,
+            'midyear' => 3,
+            default => 4,
+        };
 
+        $sortedSemesters = collect($semesterBreakdown)
+            ->groupBy('start_year') // Step 1: group by year
+            ->sortKeys()        // Step 2: sort years descending
+            ->map(function ($group) use ($semesterRank) {
+                return $group->sortBy($semesterRank); // Step 3: sort each group by semester rank
+            })
+            ->flatten(1) // Step 4: flatten the groups back into a single list
+            ->values();  // optional: reset keys
+
+
+        \Log::info('Sorted Semesters:', $sortedSemesters->toArray());
         // Separate arrays for labels and units
         $unitSemesters = $sortedSemesters->map(fn($s) => "{$s['semester']} {$s['start_year']}-{$s['end_year']}");
         $unitsData = $sortedSemesters->pluck('total_units');
@@ -80,5 +89,6 @@ class DashboardController extends Controller
             'unitSemesters' => $unitSemesters,
             'unitsData' => $unitsData,
         ]);
+
     }
 }

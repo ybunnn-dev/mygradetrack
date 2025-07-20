@@ -2,23 +2,51 @@ let allCourses = {};
 
 window.currentSemesterId = null;
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize by loading the first semester if available
-    const firstSemester = document.querySelector('.semester-item');
-    if (firstSemester) {
-        currentSemesterId = firstSemester.dataset.semester;
-        loadSemesterGrades(currentSemesterId);
+document.addEventListener('DOMContentLoaded', function () {
+    const semesterItems = document.querySelectorAll('.semester-item');
+
+    if (semesterItems.length === 0) return;
+
+    // Check if a semester was saved in localStorage
+    const savedSemesterId = localStorage.getItem('currentSemesterId');
+    let semesterToLoad = null;
+
+    // Try to find a matching .semester-item with the saved ID
+    if (savedSemesterId) {
+        const matchedSemester = Array.from(semesterItems).find(item => item.dataset.semester === savedSemesterId);
+        if (matchedSemester) {
+            semesterToLoad = matchedSemester.dataset.semester;
+            highlightActiveSemester(matchedSemester);
+        }
     }
 
-    // Add event listeners to all semester items
-    document.querySelectorAll('.semester-item').forEach(item => {
-        item.addEventListener('click', function() {
+    // If not found, default to the first semester item
+    if (!semesterToLoad) {
+        semesterToLoad = semesterItems[0].dataset.semester;
+        highlightActiveSemester(semesterItems[0]);
+    }
+
+    // Set the global variable and load courses
+    currentSemesterId = semesterToLoad;
+    loadSemesterGrades(currentSemesterId);
+
+    // Add click listeners to each semester item
+    semesterItems.forEach(item => {
+        item.addEventListener('click', function () {
             currentSemesterId = this.dataset.semester;
+            localStorage.setItem('currentSemesterId', currentSemesterId);
             loadSemesterGrades(currentSemesterId);
+            highlightActiveSemester(this);
         });
     });
 
+    // Utility to mark the active semester visually
+    function highlightActiveSemester(activeItem) {
+        semesterItems.forEach(item => item.classList.remove('bg-mainback', 'font-semibold'));
+        activeItem.classList.add('bg-mainback', 'font-semibold');
+    }
 });
+
 
 function loadSemesterGrades(semesterId) {
     fetch(`/semesters/${semesterId}/courses`)

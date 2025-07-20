@@ -11,7 +11,14 @@
         const gpaData = @json($sortedSemesters->pluck('semester_gwa'));
         const unitSemesters = @json($unitSemesters);
         const unitsData = @json($unitsData);
+
+        // Log semesters to check order
+        console.log("Sorted Semesters:");
+        semesters.forEach(([semester, year]) => {
+            console.log(`${year} - ${semester}`);
+        });
     </script>
+
 
     <div class="h-screen bg-mainback flex flex-col">
         <div class="flex-1 overflow-y-auto">

@@ -1,22 +1,15 @@
 import { initUnitsDonutChart } from '../charts/unitsChart';
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Reverse the semester and GPA data for oldest-to-latest order
-    const reversedSemesters = [...semesters].reverse();
-    const reversedGpaData = [...gpaData].reverse();
-
-    // Also reverse unit chart labels & data (if needed)
-    const reversedUnitSemesters = [...unitSemesters].reverse();
-    const reversedUnitsData = [...unitsData].reverse();
-
+    // Use data directly (in chronological order already sorted from backend)
     const ctx = document.getElementById('gpaChart').getContext('2d');
     const gpaChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: reversedSemesters,
+            labels: semesters, // not reversed
             datasets: [{
                 label: 'GWA per Semester',
-                data: reversedGpaData,
+                data: gpaData, // not reversed
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1,
                 fill: false,
@@ -60,6 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Pass reversed data to donut chart too
-    initUnitsDonutChart(reversedUnitSemesters, reversedUnitsData);
+    // Donut chart also receives normal data now
+    initUnitsDonutChart(unitSemesters, unitsData);
 });
