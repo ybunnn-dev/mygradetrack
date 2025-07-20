@@ -30,6 +30,11 @@ export default () => ({
 
         this.isLoading = true;
         
+        if(this.semester === '1st Semester'){
+            this.semester = '1st Sem';
+        }else if(this.semester === '2nd Semester'){
+            this.semester = '2nd Sem';
+        }
         try {
             const response = await fetch('/semesters/add', {
                 method: 'POST',

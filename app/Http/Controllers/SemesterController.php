@@ -13,7 +13,7 @@ class SemesterController extends Controller
     public function storeSemester(Request $request)
     {
         $validated = $request->validate([
-            'semester' => 'required|string|in:1st,2nd,Midyear',
+            'semester' => 'required|string|in:1st Sem,2nd Sem,Midyear',
             'yearStart' => 'required|integer|min:2000|max:2100',
             'yearEnd' => 'required|integer'
         ]);
