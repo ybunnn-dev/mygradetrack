@@ -45,8 +45,8 @@ export default () => ({
     popupPosition() {
         const sidebarWidth = this.open ? 15 : 5; // rem values
         return {
-            top: this.open ? '-2.7rem' : '1rem',
-            left: `${sidebarWidth-1}rem`
+            top: this.open ? '-2.7rem' : '-1rem',
+            left: `${sidebarWidth-2}rem`
         };
     },
 
