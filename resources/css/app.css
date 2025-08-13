@@ -7,6 +7,16 @@
     display: none !important;
 }
 
+@layer utilities {
+  .scrollbar-hidden {
+    -ms-overflow-style: none;  /* IE & Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari, Opera */
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

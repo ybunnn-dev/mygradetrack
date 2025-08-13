@@ -28,9 +28,9 @@
             @include('partials.sidenav') <!-- Sidebar -->
 
             <!-- Main Content - Fixed to screen height -->
-            <div class="flex-1 flex flex-col h-screen overflow-hidden p-6 rounded-xl">
+            <div class="flex-1 flex flex-col h-screen overflow-auto p-6 rounded-xl">
                 <!-- Scrollable Page Content -->
-                <main class="flex-1 overflow-y-hidden rounded-xl">
+                <main class="flex-1 overflow-y-auto rounded-xl scrollbar-hidden">
                     {{ $slot }}
                 </main>
             </div>

@@ -29,5 +29,10 @@ export default {
         },
     },
 
-    plugins: [forms, typography],
+    plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('tailwind-scrollbar'),
+    ],
+
 };
