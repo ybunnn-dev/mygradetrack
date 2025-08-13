@@ -28,7 +28,7 @@
             @include('partials.sidenav') <!-- Sidebar -->
 
             <!-- Main Content - Fixed to screen height -->
-            <div class="flex-1 flex flex-col h-screen overflow-auto rounded-xl py-6 pr-6"
+            <div class="flex-1 flex flex-col h-screen overflow-auto rounded-xl py-4 pr-4"
                 :class="{ 'p-6': open, 'p-0': !open }">
                 <!-- Scrollable Page Content -->
                 <main class="flex-1 overflow-y-auto rounded-xl scrollbar-hidden bg-mainback">

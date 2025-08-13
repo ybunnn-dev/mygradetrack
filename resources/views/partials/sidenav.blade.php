@@ -2,7 +2,7 @@
     {{-- Toggle Button --}}
     <button
         @click="toggleSidebar"
-        class="absolute top-14 -right-4 transform -translate-y-1/2 z-20 bg-f7 text-white p-1 rounded-full transition-all hover:bg-f7/90"
+        class="absolute top-16 -right-4 transform -translate-y-1/2 z-20 bg-f7 text-white p-1 rounded-full transition-all hover:bg-f7/90"
         aria-label="Toggle Sidebar"
     >
         <div :class="{ 'rotate-180': !open }" class="transition-transform duration-300">
@@ -18,7 +18,8 @@
         class="transition-all duration-300 bg-navgreen text-white h-full flex flex-col pt-8"
     >
         {{-- Logo --}}
-        <div class="flex items-center h-14 px-4 gap-1">
+        <div class="flex items-center h-14 px-1 gap-1 mt-2"
+            :class="{ 'px-3': !open, 'px-1': open}">
             <img src="{{ asset('images/icons/logo.svg') }}" class="w-5 h-5 min-w-10">
            <span class="font-bold whitespace-nowrap text-[13px] sm:text-sm md:text-base transition-transform duration-300"
                 :class="{ 'scale-x-0 opacity-0': !open }">
@@ -48,7 +49,7 @@
             </li>
             <li class="flex items-center group">
                 <a href="{{ route('grades') }}"
-                   class="flex items-center w-full py-3 pl-4 hover:bg-white/10 transition-colors gap-2"
+                   class="flex items-center w-full py-3 pl-4 hover:bg-white/10 transition-colors gap-2 rounded-lg"
                    :class="{
                        'bg-[#148079] text-f7 font-bold': activeItem === 'grades',
                        'text-white': activeItem !== 'grades'
@@ -66,7 +67,7 @@
             </li>
             <li class="flex items-center group">
                 <a href="{{ route('metrics') }}"
-                   class="flex items-center w-full py-3 pl-4 hover:bg-white/10 transition-colors gap-2"
+                   class="flex items-center w-full py-3 pl-4 hover:bg-white/10 transition-colors gap-2 rounded-lg"
                    :class="{
                        'bg-[#148079] text-f7 font-bold': activeItem === 'metrics',
                        'text-white': activeItem !== 'metrics'
