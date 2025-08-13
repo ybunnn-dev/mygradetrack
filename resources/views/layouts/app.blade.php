@@ -24,13 +24,13 @@
     <body class="font-sans antialiased">
         <x-banner />
 
-        <div class="min-h-screen bg-gray-100 flex">
+        <div class="min-h-screen bg-navgreen flex">
             @include('partials.sidenav') <!-- Sidebar -->
 
             <!-- Main Content - Fixed to screen height -->
-            <div class="flex-1 flex flex-col h-screen overflow-hidden">
+            <div class="flex-1 flex flex-col h-screen overflow-hidden p-6 rounded-xl">
                 <!-- Scrollable Page Content -->
-                <main class="flex-1 overflow-y-auto">
+                <main class="flex-1 overflow-y-hidden rounded-xl">
                     {{ $slot }}
                 </main>
             </div>

@@ -22,7 +22,7 @@
 
     <div class="h-screen bg-mainback flex flex-col">
         <div class="flex-1 overflow-y-auto">
-            <div class="max-w-7xl mx-auto sm:px-4 lg:px-6 py-12">
+            <div class="max-w-[90rem] mx-auto sm:px-4 lg:px-6 py-12">
                 <!-- Responsive heading -->
                 <h1 class="font-bold mb-6 text-xl sm:text-base md:text-2xl lg:text-3xl text-text_heavy">
                     Home

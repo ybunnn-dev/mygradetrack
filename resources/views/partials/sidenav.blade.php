@@ -1,12 +1,12 @@
-<div x-data="sideMenu()" class="relative flex flex-col min-h-screen">
+<div x-data="sideMenu()" class="relative flex flex-col min-h-screen pb-6 px-3">
     {{-- Toggle Button --}}
     <button
         @click="toggleSidebar"
-        class="absolute top-16 -right-4 transform -translate-y-1/2 z-20 bg-f7 text-white p-1 rounded-full transition-all hover:bg-f7/90"
+        class="absolute top-14 -right-4 transform -translate-y-1/2 z-20 bg-f7 text-white p-1 rounded-full transition-all hover:bg-f7/90"
         aria-label="Toggle Sidebar"
     >
         <div :class="{ 'rotate-180': !open }" class="transition-transform duration-300">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
                 <path d="M7.82054 20.7313C8.21107 21.1218 8.84423 21.1218 9.23476 20.7313L15.8792 14.0868C17.0505 12.9155 17.0508 11.0167 15.88 9.84497L9.3097 3.26958C8.91918 2.87905 8.28601 2.87905 7.89549 3.26958C7.50497 3.6601 7.50497 4.29327 7.89549 4.68379L14.4675 11.2558C14.8581 11.6464 14.8581 12.2795 14.4675 12.67L7.82054 19.317C7.43002 19.7076 7.43002 20.3407 7.82054 20.7313Z" fill="#129990"/>
             </svg>
         </div>
@@ -14,7 +14,7 @@
 
     {{-- Sidebar --}}
     <div
-        :class="{ 'w-60': open, 'w-20': !open }"
+        :class="{ 'w-56': open, 'w-16': !open }"
         class="transition-all duration-300 bg-navgreen text-white h-full flex flex-col pt-8"
     >
         {{-- Logo --}}
@@ -30,7 +30,7 @@
         <ul class="flex-1 mt-10">
             <li class="flex items-center group">
                 <a href="{{ route('dashboard') }}"
-                   class="flex items-center w-full py-3 pl-6 hover:bg-white/10 transition-colors gap-2"
+                   class="flex items-center w-full py-3 pl-4 hover:bg-white/10 transition-colors gap-2 rounded-lg"
                    :class="{
                        'bg-[#148079] text-f7 font-bold': activeItem === 'home',
                        'text-white': activeItem !== 'home'
@@ -48,7 +48,7 @@
             </li>
             <li class="flex items-center group">
                 <a href="{{ route('grades') }}"
-                   class="flex items-center w-full py-3 pl-6 hover:bg-white/10 transition-colors gap-2"
+                   class="flex items-center w-full py-3 pl-4 hover:bg-white/10 transition-colors gap-2"
                    :class="{
                        'bg-[#148079] text-f7 font-bold': activeItem === 'grades',
                        'text-white': activeItem !== 'grades'
@@ -66,7 +66,7 @@
             </li>
             <li class="flex items-center group">
                 <a href="{{ route('metrics') }}"
-                   class="flex items-center w-full py-3 pl-6 hover:bg-white/10 transition-colors gap-2"
+                   class="flex items-center w-full py-3 pl-4 hover:bg-white/10 transition-colors gap-2"
                    :class="{
                        'bg-[#148079] text-f7 font-bold': activeItem === 'metrics',
                        'text-white': activeItem !== 'metrics'
@@ -85,7 +85,7 @@
         </ul>
 
         {{-- User Profile (Bottom) --}}
-        <div class="p-4 bg-greenactive relative">
+        <div class="p-4 bg-greenactive relative rounded-lg">
             <div
                 @mouseenter="showMenu = true"
                 @mouseleave="showMenu = false"
