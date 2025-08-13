@@ -1,4 +1,3 @@
-# 🎓 
 <p align="center">
 <img src="public/images/icons/logo.svg" alt="MYGRADETRACK Logo" width="120">
 </p>
