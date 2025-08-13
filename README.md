@@ -10,7 +10,7 @@ MYGRADETRACK
 ---
 
 <h1 align="center">
-  <img src="public/images/image.png" alt="iHealthLink Logo" width="400"/>
+  <img src="public/images/image.png" alt="iHealthLink Logo" width="600"/>
 </h1>
 
 ---
