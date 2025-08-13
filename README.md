@@ -7,9 +7,13 @@
 MYGRADETRACK
 </h1>
 
+---
+
 <h1 align="center">
   <img src="public/images/image.png" alt="iHealthLink Logo" width="400"/>
 </h1>
+
+---
 
 A Laravel-based **Grade Tracking System** that allows students and administrators to manage semesters, subjects, units, and academic performance efficiently.
 
